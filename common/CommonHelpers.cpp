@@ -2,7 +2,7 @@
 
 #include <QByteArray>
 
-namespace SSRPlugin
+namespace SSPlugin
 {
     QString SafeBase64Decode(QString string)
     {

@@ -6,17 +6,17 @@
 
 #include <QWidget>
 
-namespace SSRPlugin
+namespace SSPlugin
 {
-    class SSROutboundEditor
+    class SSOutboundEditor
         : public Qv2rayPlugin::QvPluginEditor
         , private Ui::SSROutboundEditor
     {
         Q_OBJECT
 
       public:
-        explicit SSROutboundEditor(QWidget *parent = nullptr);
-        ~SSROutboundEditor();
+        explicit SSOutboundEditor(QWidget *parent = nullptr);
+        ~SSOutboundEditor();
         void SetHostInfo(const QString &address, int port) override;
         void SetContent(const QJsonObject &) override;
         QPair<QString, int> GetHostInfo() const override;
@@ -25,18 +25,17 @@ namespace SSRPlugin
         void SwitchOutbound(const QString &) override{};
         QList<Qv2rayPlugin::QvPluginOutboundProtocolObject> OutboundCapabilities() const override
         {
-            return { { "ShadowSocksR", "shadowsocksr" } };
+            return { { "ShadowSocks-sip003", "shadowsocks-sip003" } };
         }
       private slots:
-        void on_ssrPasswordTxt_textEdited(const QString &arg1);
-        void on_ssrMethodCombo_currentTextChanged(const QString &arg1);
-        void on_ssrProtocolCombo_currentTextChanged(const QString &arg1);
-        void on_ssrObfsCombo_currentTextChanged(const QString &arg1);
-        void on_ssrProtocolParamsTxt_textEdited(const QString &arg1);
-        void on_ssrObfsParamsTxt_textEdited(const QString &arg1);
+        void on_ssKeyTxt_textEdited(const QString &arg1);
+        void on_ssPasswordTxt_textEdited(const QString &arg1);
+        void on_ssMethodCombo_currentTextChanged(const QString &arg1);
+        void on_ssPluginTxt_textEdited(const QString &arg1);
+        void on_ssPluginOptTxt_textEdited(const QString &arg1);
 
       private:
-        ShadowSocksRServerObject shadowsocksR;
+        ShadowSocksServerObject shadowsocks;
     };
 
-} // namespace SSRPlugin
+} // namespace SSPlugin

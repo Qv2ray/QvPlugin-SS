@@ -1,4 +1,4 @@
-project(QvSSRPlugin)
+project(QvSSPlugin)
 cmake_minimum_required(VERSION 3.1.0)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -11,18 +11,19 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
+include(CTest)
 find_package(Qt5 COMPONENTS Core Widgets Gui Network REQUIRED)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-include(cmake/shadowsocksr-uvw.cmake)
+include(cmake/shadowsocks-uvw.cmake)
 set(QVPLUGIN_INTERFACE_INCLUDE_DIR "interface/")
 set(QVPLUGIN_HAS_HTTP_TO_SOCKS_HELPER ON)
 include(interface/QvPluginInterface.cmake)
 include_directories(${QVPLUGIN_INTERFACE_INCLUDE_DIR})
 
 add_library(${PROJECT_NAME} MODULE
-    SSRPlugin.hpp
-    SSRPlugin.cpp
+    SSPlugin.hpp
+    SSPlugin.cpp
     common/CommonHelpers.cpp
     common/CommonHelpers.hpp
     core/Serializer.cpp
@@ -30,7 +31,7 @@ add_library(${PROJECT_NAME} MODULE
     core/EventHandler.cpp
     core/EventHandler.hpp
     core/kernel/SSRInstance.cpp
-    core/kernel/SSRInstance.hpp
+    core/kernel/SSInstance.hpp
     ui/SSROutboundEditor.cpp
     ui/SSROutboundEditor.hpp
     ui/SSROutboundEditor.ui
@@ -48,6 +49,20 @@ target_link_libraries(${PROJECT_NAME}
     Qt5::Gui
     Qt5::Widgets
     Qt5::Network
-    ${SHADOWSOCKSR_UVW_LIBRARY})
+    ${SHADOWSOCKS_UVW_LIBRARY})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION share/qv2ray/plugins)
+if(BUILD_TESTING)
+    add_executable(testparsess test/TestParseSS.cpp test/catch.hpp
+    common/CommonHelpers.cpp
+    common/CommonHelpers.hpp
+    core/Serializer.cpp
+    core/Serializer.hpp
+    ${QVPLUGIN_INTERFACE_HEADERS})
+    target_link_libraries(testparsess 
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
+    Qt5::Network)
+    add_test(NAME testparsess COMMAND $<TARGET_FILE:testparsess>)
+endif()

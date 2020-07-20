@@ -1,14 +1,14 @@
 #pragma once
-#include "3rdparty/shadowsocksr-uvw/src/SSRThread.hpp"
+#include "3rdparty/shadowsocks-uvw/src/SSThread.hpp"
 #include "QvPluginProcessor.hpp"
 #include "common/CommonHelpers.hpp"
 #include "utils/HttpProxy.hpp"
-namespace SSRPlugin
+namespace SSPlugin
 {
-    class SSRKernelInstance : public Qv2rayPlugin::QvPluginKernel
+    class SSKernelInstance : public Qv2rayPlugin::QvPluginKernel
     {
       public:
-        explicit SSRKernelInstance(QObject *parent = nullptr);
+        explicit SSKernelInstance(QObject *parent = nullptr);
         bool StartKernel() override;
         bool StopKernel() override;
         void SetConnectionSettings(const QMap<KernelSetting, QVariant> &options, const QJsonObject &settings) override;
@@ -18,8 +18,8 @@ namespace SSRPlugin
         int http_local_port;
         bool enable_udp;
         QString listen_address;
-        ShadowSocksRServerObject outbound;
+        ShadowSocksServerObject outbound;
         std::unique_ptr<Qv2rayPlugin::Utils::HttpProxy> httpProxy;
-        std::unique_ptr<SSRThread> ssrThread;
+        std::unique_ptr<SSThread> ssrThread;
     };
 } // namespace SSRPlugin

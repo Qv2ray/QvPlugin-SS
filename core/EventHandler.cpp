@@ -1,5 +1,5 @@
 #include "EventHandler.hpp"
 
-SSRPluginEventHandler::SSRPluginEventHandler(QObject *parent) : Qv2rayPlugin::QvPluginEventHandler(parent)
+SSPluginEventHandler::SSPluginEventHandler(QObject *parent) : Qv2rayPlugin::QvPluginEventHandler(parent)
 {
 }

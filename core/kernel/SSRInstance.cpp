@@ -1,20 +1,19 @@
 
-#include "SSRInstance.hpp"
-
-#include "3rdparty/shadowsocksr-uvw/src/SSRThread.hpp"
+#include "3rdparty/shadowsocks-uvw/src/SSThread.hpp"
+#include "SSInstance.hpp"
 #include "common/CommonHelpers.hpp"
 
 #include <QJsonArray>
 #include <QJsonObject>
 #include <memory>
 
-namespace SSRPlugin
+namespace SSPlugin
 {
-    SSRKernelInstance::SSRKernelInstance(QObject *parent) : Qv2rayPlugin::QvPluginKernel(parent)
+    SSKernelInstance::SSKernelInstance(QObject *parent) : Qv2rayPlugin::QvPluginKernel(parent)
     {
     }
 
-    void SSRKernelInstance::SetConnectionSettings(const QMap<KernelSetting, QVariant> &options, const QJsonObject &settings)
+    void SSKernelInstance::SetConnectionSettings(const QMap<KernelSetting, QVariant> &options, const QJsonObject &settings)
     {
         this->listen_address = options[KERNEL_LISTEN_ADDRESS].toString();
         socks_local_port = options[KERNEL_SOCKS_ENABLED].toBool() ? options[KERNEL_SOCKS_PORT].toInt() : 0;
@@ -23,7 +22,7 @@ namespace SSRPlugin
         outbound.loadJson(settings);
     }
 
-    bool SSRKernelInstance::StartKernel()
+    bool SSKernelInstance::StartKernel()
     {
         if (socks_local_port == 0 && http_local_port == 0)
         {
@@ -37,24 +36,22 @@ namespace SSRPlugin
         auto remote_host = outbound.address.toStdString();
         auto method = outbound.method.toStdString();
         auto password = outbound.password.toStdString();
-        auto obfs = outbound.obfs.toStdString();
-        auto obfs_param = outbound.obfs_param.toStdString();
-        auto protocol = outbound.protocol.toStdString();
-        auto protocol_param = outbound.protocol_param.toStdString();
-        auto mode = static_cast<SSRThread::SSR_WORK_MODE>(enable_udp);
-        ssrThread = std::make_unique<SSRThread>(socks_local_port,             //
+        auto key = outbound.key.toStdString();
+        auto plugin= outbound.plugin.toStdString();
+        auto plugin_opts= outbound.plugin_options.toStdString();
+        auto mode = static_cast<SSThread::SSR_WORK_MODE>(enable_udp);
+        ssrThread = std::make_unique<SSThread>(socks_local_port,             //
                                                 remotePort,                   //
                                                 60000, 1500, mode,            //
                                                 listen_address.toStdString(), //
                                                 remote_host,                  //
                                                 method,                       //
                                                 password,                     //
-                                                obfs,                         //
-                                                obfs_param,                   //
-                                                protocol,                     //
-                                                protocol_param);
-        ssrThread->connect(ssrThread.get(), &SSRThread::onSSRThreadLog, this, &SSRKernelInstance::OnKernelLogAvailable);
-        ssrThread->connect(ssrThread.get(), &SSRThread::OnDataReady, this, &SSRKernelInstance::OnKernelStatsAvailable);
+                                                plugin,                     //
+                                                plugin_opts,
+                                                key);
+        ssrThread->connect(ssrThread.get(), &SSThread::onSSRThreadLog, this, &SSKernelInstance::OnKernelLogAvailable);
+        ssrThread->connect(ssrThread.get(), &SSThread::OnDataReady, this, &SSKernelInstance::OnKernelStatsAvailable);
         ssrThread->start();
         if (http_local_port != 0)
         {
@@ -64,7 +61,7 @@ namespace SSRPlugin
         return true;
     }
 
-    bool SSRKernelInstance::StopKernel()
+    bool SSKernelInstance::StopKernel()
     {
         ssrThread.reset();
         httpProxy.reset();

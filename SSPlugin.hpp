@@ -3,16 +3,16 @@
 #include "QvPluginInterface.hpp"
 #include "core/EventHandler.hpp"
 #include "core/Serializer.hpp"
-#include "core/kernel/SSRInstance.hpp"
+#include "core/kernel/SSInstance.hpp"
 
 #include <QObject>
 #include <QtPlugin>
 
 class QLabel;
 using namespace Qv2rayPlugin;
-namespace SSRPlugin
+namespace SSPlugin
 {
-    class QvSSRPlugin
+    class QvSSPlugin
         : public QObject
         , Qv2rayInterface
     {
@@ -25,16 +25,16 @@ namespace SSRPlugin
         const QvPluginMetadata GetMetadata() const override
         {
             auto x = QvPluginMetadata{
-                "SSR Plugin",                         //
+                "SS Plugin",                         //
                 "Qv2ray Development Group",           //
-                "qvplugin_ssr",                       //
-                "Support SSR connections in Qv2ray.", //
+                "qvplugin_ss",                       //
+                "Support SS SIP003 connections in Qv2ray.", //
                 QIcon(":/qv2ray.png"),                //
                 {},                                   //
                 { SPECIAL_TYPE_KERNEL,                //
                   SPECIAL_TYPE_SERIALIZOR }           //
             };
-            x.KernelOutboundCapabilities = { { "ShadowSocksR", "shadowsocksr" } };
+            x.KernelOutboundCapabilities = { { "ShadowSocks-sip003", "shadowsocks-sip003" } };
             return x;
         }
         //
@@ -54,7 +54,7 @@ namespace SSRPlugin
 
       private:
         QJsonObject settings;
-        std::shared_ptr<SSRPluginEventHandler> eventHandler;
-        std::shared_ptr<SSRSerializer> serializer;
+        std::shared_ptr<SSPluginEventHandler> eventHandler;
+        std::shared_ptr<SSSerializer> serializer;
     };
 } // namespace SSRPlugin

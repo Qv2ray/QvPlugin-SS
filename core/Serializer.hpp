@@ -4,14 +4,14 @@
 #include "common/CommonHelpers.hpp"
 
 #include <QList>
-namespace SSRPlugin
+namespace SSPlugin
 {
-    QJsonObject GenerateShadowSocksROUT(QList<ShadowSocksRServerObject> servers);
-    class SSRSerializer : public Qv2rayPlugin::QvPluginSerializer
+    QJsonObject GenerateShadowSocksROUT(QList<ShadowSocksServerObject> servers);
+    class SSSerializer : public Qv2rayPlugin::QvPluginSerializer
     {
         Q_OBJECT
       public:
-        explicit SSRSerializer(QObject *parent = nullptr) : Qv2rayPlugin::QvPluginSerializer(parent){};
+        explicit SSSerializer(QObject *parent = nullptr) : Qv2rayPlugin::QvPluginSerializer(parent){};
         const QString SerializeOutbound(const QString &protocol,  //
                                         const QString &alias,     //
                                         const QString &groupName, //
@@ -19,10 +19,10 @@ namespace SSRPlugin
         const QPair<QString, QJsonObject> DeserializeOutbound(const QString &link, QString *alias, QString *errorMessage) const override;
         const Qv2rayPlugin::QvPluginOutboundInfoObject GetOutboundInfo(const QString &protocol, const QJsonObject &outbound) const override
         {
-            if (protocol == "shadowsocksr")
+            if (protocol == "shadowsocks-sip003")
             {
-                auto r = ShadowSocksRServerObject::fromJson(outbound);
-                return Qv2rayPlugin::QvPluginOutboundInfoObject{ r.address, "shadowsocksr", r.port };
+                auto r = ShadowSocksServerObject::fromJson(outbound);
+                return Qv2rayPlugin::QvPluginOutboundInfoObject{ r.address, "shadowsocks-sip003", r.port };
             }
             else
             {
@@ -31,11 +31,11 @@ namespace SSRPlugin
         }
         const QList<QString> ShareLinkPrefixes() const override
         {
-            return { "ssr://" };
+            return { "ss://" };
         };
         const QList<QString> OutboundProtocols() const override
         {
-            return { "shadowsocksr" };
+            return { "shadowsocks-sip003" };
         }
     };
 }; // namespace SSRPlugin

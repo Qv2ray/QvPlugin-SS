@@ -1,72 +1,66 @@
 #include "SSROutboundEditor.hpp"
 
-namespace SSRPlugin
+namespace SSPlugin
 {
-    SSROutboundEditor::SSROutboundEditor(QWidget *parent) : Qv2rayPlugin::QvPluginEditor(parent)
+    SSOutboundEditor::SSOutboundEditor(QWidget *parent) : Qv2rayPlugin::QvPluginEditor(parent)
     {
         setupUi(this);
     }
 
-    SSROutboundEditor::~SSROutboundEditor()
+    SSOutboundEditor::~SSOutboundEditor()
     {
     }
 
-    QPair<QString, int> SSROutboundEditor::GetHostInfo() const
+    QPair<QString, int> SSOutboundEditor::GetHostInfo() const
     {
-        return { shadowsocksR.address, shadowsocksR.port };
+        return { shadowsocks.address, shadowsocks.port };
     }
-    void SSROutboundEditor::SetHostInfo(const QString &address, int port)
+    void SSOutboundEditor::SetHostInfo(const QString &address, int port)
     {
-        shadowsocksR.address = address;
-        shadowsocksR.port = port;
+        shadowsocks.address = address;
+        shadowsocks.port = port;
     }
 
-    void SSROutboundEditor::SetContent(const QJsonObject &content)
+    void SSOutboundEditor::SetContent(const QJsonObject &content)
     {
-        shadowsocksR.loadJson(content);
+        shadowsocks.loadJson(content);
         //
-        ssrPasswordTxt->setText(shadowsocksR.password);
-        ssrMethodCombo->setCurrentText(shadowsocksR.method);
+        ssPasswordTxt->setText(shadowsocks.password);
+        ssMethodCombo->setCurrentText(shadowsocks.method);
         //
-        ssrObfsCombo->setCurrentText(shadowsocksR.obfs);
-        ssrObfsParamsTxt->setText(shadowsocksR.obfs_param);
-        ssrProtocolCombo->setCurrentText(shadowsocksR.protocol);
-        ssrProtocolParamsTxt->setText(shadowsocksR.protocol_param);
+        ssKeyTxt->setText(shadowsocks.key);
+        ssPluginTxt->setText(shadowsocks.plugin);
+        ssPluginOptTxt->setText(shadowsocks.plugin_options);
     }
 
-    const QJsonObject SSROutboundEditor::GetContent() const
+    const QJsonObject SSOutboundEditor::GetContent() const
     {
-        return shadowsocksR.toJson();
+        return shadowsocks.toJson();
     }
 
-    void SSROutboundEditor::on_ssrPasswordTxt_textEdited(const QString &arg1)
+    void SSOutboundEditor::on_ssKeyTxt_textEdited(const QString &arg1)
     {
-        shadowsocksR.password = arg1;
+        shadowsocks.key=arg1;
     }
 
-    void SSROutboundEditor::on_ssrMethodCombo_currentTextChanged(const QString &arg1)
+    void SSOutboundEditor::on_ssPasswordTxt_textEdited(const QString &arg1)
     {
-        shadowsocksR.method = arg1;
+        shadowsocks.password = arg1;
     }
 
-    void SSROutboundEditor::on_ssrProtocolCombo_currentTextChanged(const QString &arg1)
+    void SSOutboundEditor::on_ssMethodCombo_currentTextChanged(const QString &arg1)
     {
-        shadowsocksR.protocol = arg1;
+        shadowsocks.method = arg1;
     }
 
-    void SSROutboundEditor::on_ssrObfsCombo_currentTextChanged(const QString &arg1)
+    void SSOutboundEditor::on_ssPluginTxt_textEdited(const QString &arg1)
     {
-        shadowsocksR.obfs = arg1;
+        shadowsocks.plugin=arg1;
     }
 
-    void SSROutboundEditor::on_ssrProtocolParamsTxt_textEdited(const QString &arg1)
+    void SSOutboundEditor::on_ssPluginOptTxt_textEdited(const QString &arg1)
     {
-        shadowsocksR.protocol_param = arg1;
+        shadowsocks.plugin_options=arg1;
     }
 
-    void SSROutboundEditor::on_ssrObfsParamsTxt_textEdited(const QString &arg1)
-    {
-        shadowsocksR.obfs_param = arg1;
-    }
-
-} // namespace SSRPlugin
+} // namespace SSPlugin
