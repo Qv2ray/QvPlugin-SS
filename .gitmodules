@@ -1,6 +1,6 @@
 [submodule "interface"]
 	path = interface
 	url = https://github.com/Qv2ray/QvPlugin-Interface
-[submodule "3rdparty/shadowsocksr-uvw"]
+[submodule "3rdparty/shadowsocks-uvw"]
 	path = 3rdparty/shadowsocks-uvw
 	url = https://github.com/Qv2ray/shadowsocks-uvw.git
