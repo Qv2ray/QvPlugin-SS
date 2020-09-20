@@ -1,9 +1,9 @@
 #pragma once
 #include "QvPluginProcessor.hpp"
 
-class SSPluginEventHandler : public Qv2rayPlugin::QvPluginEventHandler
+class SSPluginEventHandler : public Qv2rayPlugin::PluginEventHandler
 {
   public:
-    SSPluginEventHandler(QObject *parent = nullptr);
+    SSPluginEventHandler();
     // SSR Plugin does not receive any events.
 };
