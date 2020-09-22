@@ -21,7 +21,7 @@ class QvSSPlugin
     const QvPluginMetadata GetMetadata() const override
     {
         return QvPluginMetadata{
-            "Shadowsocks Plugin",               //
+            "Shadowsocks SIP003 Plugin",        //
             "Qv2ray Development Group",         //
             "qvplugin_ss",                      //
             "Add SS SIP003 support for Qv2ray", //
