@@ -30,6 +30,8 @@ class SSOutboundEditor
     void on_ssPluginTxt_textEdited(const QString &arg1);
     void on_ssPluginOptTxt_textEdited(const QString &arg1);
 
-  private:
+    void on_selectFilePushButton_clicked();
+
+private:
     ShadowSocksServerObject shadowsocks;
 };

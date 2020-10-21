@@ -1,4 +1,5 @@
 #include "SSOutboundEditor.hpp"
+#include <QFileDialog>
 
 SSOutboundEditor::SSOutboundEditor(QWidget *parent) : Qv2rayPlugin::QvPluginEditor(parent)
 {
@@ -59,4 +60,18 @@ void SSOutboundEditor::on_ssPluginTxt_textEdited(const QString &arg1)
 void SSOutboundEditor::on_ssPluginOptTxt_textEdited(const QString &arg1)
 {
     shadowsocks.plugin_options = arg1;
+}
+
+void SSOutboundEditor::on_selectFilePushButton_clicked()
+{
+    auto filename = QFileDialog::getOpenFileName(this,tr("Plugin Executable File"),{}
+                                             #ifdef Q_OS_WIN
+                                                 ,tr("EXE (*.exe)")
+                                             #endif
+                                                 );
+    if(!filename.isEmpty())
+    {
+        shadowsocks.plugin = filename;
+        ssPluginTxt->setText(shadowsocks.plugin);
+    }
 }
