@@ -12,7 +12,14 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 include(CTest)
-find_package(Qt5 COMPONENTS Core Widgets Gui Network REQUIRED)
+
+option(QVPLUGIN_USE_QT6 "Use Qt6")
+if(QVPLUGIN_USE_QT6)
+    set(QV_QT_LIBNAME Qt6)
+else()
+    set(QV_QT_LIBNAME Qt5)
+endif()
+find_package(${QV_QT_LIBNAME} COMPONENTS Core Widgets Gui Network REQUIRED)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 include(cmake/shadowsocks-uvw.cmake)
@@ -48,10 +55,10 @@ if(APPLE)
 endif()
 
 target_link_libraries(${PROJECT_NAME}
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::Network
+    ${QV_QT_LIBNAME}::Core
+    ${QV_QT_LIBNAME}::Gui
+    ${QV_QT_LIBNAME}::Widgets
+    ${QV_QT_LIBNAME}::Network
     ${SHADOWSOCKS_UVW_LIBRARY})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION share/qv2ray/plugins)
@@ -63,9 +70,9 @@ if(BUILD_TESTING)
     core/Serializer.hpp
     ${QVPLUGIN_INTERFACE_HEADERS})
     target_link_libraries(testparsess 
-    Qt5::Core
-    Qt5::Gui
-    Qt5::Widgets
-    Qt5::Network)
+    ${QV_QT_LIBNAME}::Core
+    ${QV_QT_LIBNAME}::Gui
+    ${QV_QT_LIBNAME}::Widgets
+    ${QV_QT_LIBNAME}::Network)
     add_test(NAME testparsess COMMAND $<TARGET_FILE:testparsess>)
 endif()

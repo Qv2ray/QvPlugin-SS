@@ -91,16 +91,11 @@ const QPair<QString, QJsonObject> SSSerializer::DeserializeOutbound(const QStrin
     }
 
     d_name = QUrl::fromPercentEncoding(d_name.toUtf8());
-    *alias = alias->isEmpty()                                                                                                //
-                 ?                                                                                                           //
-                 (d_name.isEmpty() ? server.address + server.port + server.group + server.method + server.password : d_name) //
-                 :                                                                                                           //
-                 *alias + "_" + d_name;                                                                                      //
+    const auto generatedAlias = server.address + QString::number(server.port) + server.group + server.method + server.password;
+    *alias = alias->isEmpty() ? (d_name.isEmpty() ? generatedAlias : d_name) : *alias + "_" + d_name;
     *alias = alias->trimmed();
     if (alias->isEmpty())
-    {
         *alias = "SS Connection";
-    }
     return { "shadowsocks-sip003", server.toJson() };
 }
 
