@@ -13,14 +13,23 @@ struct ShadowSocksServerObject
     QString remarks; // Unused
     QString group;   // Unused
     int port;
-    ShadowSocksServerObject()
-    {
+
+    ShadowSocksServerObject() {
         method = "chacha20-ietf-poly1305";
         address = "0.0.0.0";
         port = 0;
     }
-    JSONSTRUCT_REGISTER(ShadowSocksServerObject, F(address, method, password, plugin, plugin_options, key, remarks, group, port))
+
+    JSONSTRUCT_REGISTER(ShadowSocksServerObject,
+                        F(address, method, password, plugin, plugin_options, key, remarks, group, port))
+};
+
+struct SSPluginSettingObject {
+    QString default_plugin_prefix;
+
+    JSONSTRUCT_REGISTER(SSPluginSettingObject, F(default_plugin_prefix))
 };
 
 QString SafeBase64Decode(QString string);
+
 QString SafeBase64Encode(const QString &string, bool trim = true);

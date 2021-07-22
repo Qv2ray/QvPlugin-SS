@@ -3,13 +3,10 @@
 #include "SSInstance.hpp"
 #include "common/CommonHelpers.hpp"
 
+#include <QDir>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <memory>
-
-SSKernelInstance::SSKernelInstance(QObject *) : PluginKernel()
-{
-}
 
 void SSKernelInstance::SetConnectionSettings(const QMap<KernelOptionFlags, QVariant> &options, const QJsonObject &settings)
 {
@@ -35,9 +32,18 @@ bool SSKernelInstance::StartKernel()
     auto method = outbound.method.toStdString();
     auto password = outbound.password.toStdString();
     auto key = outbound.key.toStdString();
-    auto plugin = outbound.plugin.toStdString();
+    auto plugin = outbound.plugin;
     auto plugin_opts = outbound.plugin_options.toStdString();
+    auto plugin_default_prefix = parent->GetSettngs().value("default_plugin_prefix").toString();
+    std::string plugin_final_path;
     auto mode = static_cast<SSThread::SSR_WORK_MODE>(enable_udp);
+
+    if (plugin[0] != '/') {
+        plugin_final_path = QDir(plugin_default_prefix).filePath(plugin).toStdString();
+    } else {
+        plugin_final_path = plugin.toStdString();
+    }
+
     ssrThread = std::make_unique<SSThread>(socks_local_port,             //
                                            remotePort,                   //
                                            60000, 1500, mode,            //
@@ -45,7 +51,7 @@ bool SSKernelInstance::StartKernel()
                                            remote_host,                  //
                                            method,                       //
                                            password,                     //
-                                           plugin,                       //
+                                           plugin_final_path,            //
                                            plugin_opts, key);
     ssrThread->connect(ssrThread.get(), &SSThread::onSSRThreadLog, this, &SSKernelInstance::OnKernelLogAvailable);
     ssrThread->connect(ssrThread.get(), &SSThread::OnDataReady, this, &SSKernelInstance::OnKernelStatsAvailable);

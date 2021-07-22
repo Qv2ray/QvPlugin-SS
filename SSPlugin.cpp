@@ -1,6 +1,7 @@
 #include "SSPlugin.hpp"
 
 #include "core/Serializer.hpp"
+#include "core/kernel/SSInstance.hpp"
 #include "ui/GUIInterface.hpp"
 
 #include <QDateTime>
@@ -14,6 +15,6 @@ bool QvSSPlugin::InitializePlugin(const QString &, const QJsonObject &_settings)
     eventHandler = std::make_shared<SSPluginEventHandler>();
     outboundHandler = std::make_shared<SSSerializer>();
     guiInterface = new ShadowsocksPluginGUIInterface();
-    kernelInterface = std::make_shared<SSKernelInterface>();
+    kernelInterface = std::make_shared<SSKernelInterface>(this);
     return true;
 }

@@ -1,6 +1,6 @@
 *.user
 build/
-/cmake-build-debug
+/cmake-build-*
 /.idea
 /compile_commands.json
 

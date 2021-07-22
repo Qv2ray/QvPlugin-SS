@@ -1,5 +1,6 @@
 #include "QvGUIPluginInterface.hpp"
 #include "SSOutboundEditor.hpp"
+#include "SSSettingsWidget.hpp"
 
 using namespace Qv2rayPlugin;
 
@@ -11,11 +12,11 @@ class ShadowsocksPluginGUIInterface : public Qv2rayPlugin::PluginGUIInterface
     }
     QList<PluginGuiComponentType> GetComponents() const
     {
-        return { GUI_COMPONENT_OUTBOUND_EDITOR };
+        return {GUI_COMPONENT_OUTBOUND_EDITOR, GUI_COMPONENT_SETTINGS};
     }
     std::unique_ptr<QvPluginSettingsWidget> createSettingsWidgets() const
     {
-        return {};
+        return std::make_unique<SSSettingsWidget>();
     }
     QList<typed_plugin_editor> createInboundEditors() const
     {
