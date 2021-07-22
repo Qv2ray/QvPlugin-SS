@@ -43,6 +43,9 @@ add_library(${PROJECT_NAME} MODULE
     ui/SSOutboundEditor.cpp
     ui/SSOutboundEditor.hpp
     ui/SSOutboundEditor.ui
+    ui/SSSettingsWidget.ui
+    ui/SSSettingsWidget.cpp
+    ui/SSSettingsWidget.hpp
     ui/GUIInterface.hpp
     resx.qrc
     ${QVPLUGIN_INTERFACE_HEADERS}
@@ -64,15 +67,15 @@ target_link_libraries(${PROJECT_NAME}
 install(TARGETS ${PROJECT_NAME} DESTINATION share/qv2ray/plugins)
 if(BUILD_TESTING)
     add_executable(testparsess test/TestParseSS.cpp test/catch.hpp
-    common/CommonHelpers.cpp
-    common/CommonHelpers.hpp
-    core/Serializer.cpp
-    core/Serializer.hpp
-    ${QVPLUGIN_INTERFACE_HEADERS})
-    target_link_libraries(testparsess 
-    ${QV_QT_LIBNAME}::Core
-    ${QV_QT_LIBNAME}::Gui
-    ${QV_QT_LIBNAME}::Widgets
-    ${QV_QT_LIBNAME}::Network)
+        common/CommonHelpers.cpp
+        common/CommonHelpers.hpp
+        core/Serializer.cpp
+        core/Serializer.hpp
+        ${QVPLUGIN_INTERFACE_HEADERS})
+    target_link_libraries(testparsess
+        ${QV_QT_LIBNAME}::Core
+        ${QV_QT_LIBNAME}::Gui
+        ${QV_QT_LIBNAME}::Widgets
+        ${QV_QT_LIBNAME}::Network)
     add_test(NAME testparsess COMMAND $<TARGET_FILE:testparsess>)
 endif()

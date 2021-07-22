@@ -3,7 +3,6 @@
 #include "QvPluginInterface.hpp"
 #include "core/EventHandler.hpp"
 #include "core/Serializer.hpp"
-#include "core/kernel/SSInstance.hpp"
 
 #include <QObject>
 #include <QtPlugin>
@@ -11,8 +10,7 @@
 class QLabel;
 using namespace Qv2rayPlugin;
 class QvSSPlugin
-    : public QObject
-    , Qv2rayInterface
+    : public QObject, public Qv2rayInterface
 {
     Q_INTERFACES(Qv2rayPlugin::Qv2rayInterface)
     Q_PLUGIN_METADATA(IID Qv2rayInterface_IID)
